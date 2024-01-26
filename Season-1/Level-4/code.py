@@ -10,7 +10,7 @@ the tests.py again to recreate it.
 '''
 
 import sqlite3
-import os
+import os, re
 from flask import Flask, request
 
 ### Unrelated to the exercise -- Starts here -- Please ignore
@@ -72,6 +72,8 @@ class Create(object):
 
         finally:
             db_con.close()
+def ticker(stock_symbol):
+    return re.split("\W",stock_symbol, 1)[0]
 
 class DB_CRUD_ops(object):
 
@@ -79,6 +81,7 @@ class DB_CRUD_ops(object):
     # Example: get_stock_info('MSFT') will result into executing
     # SELECT * FROM stocks WHERE symbol = 'MSFT'
     def get_stock_info(self, stock_symbol):
+        #stock_symbol = ticker(stock_symbol)
         # building database from scratch as it is more suitable for the purpose of the lab
         db = Create()
         con = Connect()
@@ -123,6 +126,7 @@ class DB_CRUD_ops(object):
     # Example: get_stock_price('MSFT') will result into executing
     # SELECT price FROM stocks WHERE symbol = 'MSFT'
     def get_stock_price(self, stock_symbol):
+        stock_symbol = ticker(stock_symbol)
         # building database from scratch as it is more suitable for the purpose of the lab
         db = Create()
         con = Connect()
@@ -153,6 +157,7 @@ class DB_CRUD_ops(object):
 
     # updates stock price
     def update_stock_price(self, stock_symbol, price):
+        stock_symbol = ticker(stock_symbol)
         # building database from scratch as it is more suitable for the purpose of the lab
         db = Create()
         con = Connect()
