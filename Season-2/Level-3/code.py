@@ -36,7 +36,7 @@ planet_data = {
 def index():
     if request.method == 'POST':
         planet = request.form.get('planet')
-        sanitized_planet = re.sub(r'[<>{}[\]]', '', planet if planet else '')
+        sanitized_planet = re.escape(planet or "")
 
         if sanitized_planet:
             if 'script' in sanitized_planet.lower() :
@@ -51,7 +51,7 @@ def index():
     return render_template('index.html')
 
 def get_planet_info(planet):
-    return planet_data.get(planet, 'Unknown planet.')
+    return planet_data.get(planet.title(), 'Unknown planet.')
 
 if __name__ == '__main__':
     app.run()
